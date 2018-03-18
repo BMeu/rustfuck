@@ -1,0 +1,13 @@
+[package]
+name = "rustfuck_lib"
+version = "0.1.0"
+authors = ["Bastian Meyer <bastian@bastianmeyer.eu>"]
+
+keywords = ["Brainfuck", "compiler", "interpreter", "library"]
+categories = ["parser-implementations", "parsing"]
+
+repository = "https://github.com/BMeu/rustfuck"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+
+[dependencies]

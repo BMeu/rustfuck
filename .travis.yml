@@ -1,0 +1,67 @@
+language: rust
+cache: cargo
+rust:
+  - stable
+  - beta
+  - nightly
+  - nightly-2018-03-18
+os:
+  - linux
+  - osx
+env:
+  global:
+    - NIGHTLY_VERSION=nightly-2018-03-18
+    - CLIPPY_VERSION=0.0.188
+    - RUST_BACKTRACE=1
+    - PROJECT_NAME=rustfuck
+cache: cargo
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libdw-dev
+      - cmake
+      - gcc
+      - binutils-dev
+before_script:
+  - bash -c 'if [[ "$TRAVIS_RUST_VERSION" == "$NIGHTLY_VERSION" ]]; then
+      cargo install clippy --vers $CLIPPY_VERSION --force;
+    fi'
+script:
+  - bash -c 'if [[ "$TRAVIS_RUST_VERSION" == "$NIGHTLY_VERSION" ]]; then
+      cargo clippy --all -- -D warnings;
+    fi'
+  - cargo check --all
+  - cargo test --all
+  - cargo test --all --release
+after_success: |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
+  tar xzf master.tar.gz &&
+  cd kcov-master &&
+  mkdir build &&
+  cd build &&
+  cmake .. &&
+  make &&
+  sudo make install &&
+  cd ../.. &&
+  rm -rf kcov-master &&
+  for file in target/debug/$PROJECT_NAME-*[^\.d]; do mkdir -p "target/cov/$(basename $file)"; kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"; done &&
+  bash <(curl -s https://codecov.io/bash) &&
+  echo "Uploaded code coverage";
+  if [[ "$TRAVIS_RUST_VERSION" == "stable" ]]; then
+  cargo rustdoc --all-features -- --no-defaults --passes collapse-docs --passes unindent-comments --passes strip-priv-imports\
+  && echo "<meta http-equiv=refresh content=0;url=${PROJECT_NAME}/index.html>" > target/doc/index.html && \
+  sudo pip install ghp-import && \
+  ghp-import -n target/doc && \
+  git push -qf https://${TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages;
+  echo "Uploaded documentation";
+  fi;
+  fi
+matrix:
+  allow_failures:
+    - rust: nightly
+- rust: nightly-2018-03-18

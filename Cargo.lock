@@ -1,4 +1,11 @@
 [[package]]
 name = "rustfuck"
 version = "0.1.0"
+dependencies = [
+ "rustfuck_lib 0.1.0",
+]
+
+[[package]]
+name = "rustfuck_lib"
+version = "0.1.0"
 

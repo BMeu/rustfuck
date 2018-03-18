@@ -1,16 +1,20 @@
 # rustfuck
 
-Currenctly, a ``Brainfuck`` to ``C`` translator written in ``Rust``. In the future, a ``Brainfuck`` interpreter written
+Currently, a ``Brainfuck`` to ``C`` translator written in ``Rust``. In the future, a ``Brainfuck`` interpreter written
 in ``Rust``.
 
-Translate from ``Brainfuck`` to ``C``, and compile (on Linux using ``GCC``):
+[![Build Status on Travis](https://travis-ci.org/BMeu/rustfuck.svg?branch=master)](https://travis-ci.org/BMeu/rustfuck)
+[![Build Status on AppVeyor](https://ci.appveyor.com/api/projects/status/2ur0b2bqvopb96y9?svg=true)](https://ci.appveyor.com/project/BMeu/rustfuck)
+[![Codecov](https://codecov.io/gh/BMeu/rustfuck/branch/master/graph/badge.svg)](https://codecov.io/gh/BMeu/rustfuck)
+
+## Usage
+
+Translate from ``Brainfuck`` to ``C``, and compile (on Linux, using ``GCC``):
 
 ```
-$ cargo run > program.c
-$ gcc -O3 hello.c
+$ cargo run --release > program.c
+$ gcc -O3 program.c
 ```
-
-
 
 ## Acknowledgements & Sources
 

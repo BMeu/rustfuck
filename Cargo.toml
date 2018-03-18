@@ -1,6 +1,26 @@
 [package]
 name = "rustfuck"
 version = "0.1.0"
-authors = ["BMeu <bastian@bastianmeyer.eu>"]
+authors = ["Bastian Meyer <bastian@bastianmeyer.eu>"]
+
+keywords = ["Brainfuck", "compiler", "interpreter", "binary"]
+categories = ["parser-implementations", "parsing"]
+description = "Currently, a Brainfuck to C translator. In the future, a Brainfuck interpreter."
+
+repository = "https://github.com/BMeu/rustfuck"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+
+[workspace]
+members = [
+    ".",
+    "rustfuck-lib"
+]
+
+[badges]
+appveyor = { repository = "BMeu/rustfuck" }
+codecov = { repository = "BMEU/rustfuck" }
+travis-ci = { repository = "BMeu/rustfuck" }
 
 [dependencies]
+rustfuck_lib = { path = "rustfuck-lib" }
