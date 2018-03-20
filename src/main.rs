@@ -4,7 +4,7 @@
 // MIT license <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your option. This file may not be copied,
 // modified, or distributed except according to those terms.
 
-//!
+//! The binary to run the ``rustfuck`` library.
 
 #![warn(missing_docs,
         missing_debug_implementations, missing_copy_implementations,
@@ -19,14 +19,14 @@
 
 extern crate rustfuck_lib;
 
-use rustfuck_lib::generate;
-use rustfuck_lib::tokenize;
+use rustfuck_lib::Compiler;
 
 /// The classic "Hello, world!" program, written in Brainfuck.
 static PROGRAM: &'static str = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.";
 
+/// Compile the ``Hello world!`` source code and print the generated ``C`` code to ``STDOUT``.
 fn main() {
-    let tokens = tokenize(PROGRAM);
-    let generated_code = generate(&tokens);
-    println!("{}", generated_code);
+    let compiler = Compiler::new();
+    let program: String = compiler.compile(PROGRAM);
+    println!("{}", program);
 }

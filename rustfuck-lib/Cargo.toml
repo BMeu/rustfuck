@@ -5,9 +5,15 @@ authors = ["Bastian Meyer <bastian@bastianmeyer.eu>"]
 
 keywords = ["Brainfuck", "compiler", "interpreter", "library"]
 categories = ["parser-implementations", "parsing"]
+description = "Currently, a Brainfuck to C translator library. In the future, a Brainfuck interpreter library."
 
 repository = "https://github.com/BMeu/rustfuck"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
+
+[badges]
+appveyor = { repository = "BMeu/rustfuck" }
+codecov = { repository = "BMEU/rustfuck" }
+travis-ci = { repository = "BMeu/rustfuck" }
 
 [dependencies]
