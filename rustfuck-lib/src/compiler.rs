@@ -10,10 +10,11 @@ use Generator;
 use Lexer;
 use language::Brainfuck;
 
+/// The ``C`` preface of the generated tokens.
 static PREFACE: &'static str = include_str!("../resources/preface.c");
 
 /// The ``Brainfuck`` compiler.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Compiler;
 
 impl Compiler {

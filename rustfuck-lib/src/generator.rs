@@ -9,8 +9,10 @@
 use lexer::Token;
 
 /// A generator for creating ``C`` code from intermediate compile results.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Generator {
+
+    /// The current level of indentation.
     indentation_level: u32,
 }
 
