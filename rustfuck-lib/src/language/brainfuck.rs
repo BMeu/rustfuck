@@ -47,3 +47,133 @@ impl Lexer for Brainfuck {
         tokens
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use Lexer;
+    use Token;
+    use language::Brainfuck;
+
+    #[test]
+    fn test_new() {
+        let source: &str = "+-><,.[]";
+        let bf = Brainfuck::new(source);
+
+        assert_eq!(bf, Brainfuck { source: String::from(source) });
+    }
+
+    #[test]
+    fn test_tokenize_add() {
+        let source: &str = "+";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::Add,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize_sub() {
+        let source: &str = "-";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::Sub,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize_right() {
+        let source: &str = ">";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::Right,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize_left() {
+        let source: &str = "<";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::Left,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize_read() {
+        let source: &str = ",";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::Read,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize_write() {
+        let source: &str = ".";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::Write,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize_loop_begin() {
+        let source: &str = "[";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::BeginLoop,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize_loop_end() {
+        let source: &str = "]";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::EndLoop,
+        ];
+        assert_eq!(tokens, expected);
+    }
+
+    #[test]
+    fn test_tokenize() {
+        let source: &str = "+-><No Brainfuck symbols,.[]";
+        let bf = Brainfuck::new(source);
+
+        let tokens: Vec<Token> = bf.tokenize();
+        let expected: Vec<Token> = vec![
+            Token::Add,
+            Token::Sub,
+            Token::Right,
+            Token::Left,
+            Token::Read,
+            Token::Write,
+            Token::BeginLoop,
+            Token::EndLoop,
+        ];
+        assert_eq!(tokens, expected);
+    }
+}

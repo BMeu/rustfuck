@@ -82,3 +82,62 @@ impl Generator {
         indentation
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    use Generator;
+    use Token;
+
+    #[test]
+    fn test_new() {
+        let generator = Generator::new();
+        assert_eq!(generator, Generator { indentation_level: 1 })
+    }
+
+    #[test]
+    fn test_generate_hello_world() {
+        let template: &str = "{\n";
+        let tokens: Vec<Token> = vec![
+            Token::Add,
+            Token::Right,
+            Token::Left,
+            Token::BeginLoop,
+            Token::Read,
+            Token::Sub,
+            Token::EndLoop,
+            Token::Write,
+        ];
+        let expected = String::from(include_str!("../resources/tests/generator_test_generate.c"));
+
+        let mut generator = Generator::new();
+        let generated: String = generator.generate(template, &tokens);
+        assert_eq!(generated, expected);
+    }
+
+    #[test]
+    fn test_indent_level_0() {
+        let line: &str = "fn test_indent_level_0() {}";
+        let mut generator = Generator::new();
+        generator.indentation_level = 0;
+
+        assert_eq!(generator.indent(line), String::from(line));
+    }
+
+    #[test]
+    fn test_indent_level_1() {
+        let line: &str = "fn test_indent_level_1() {}";
+        let generator = Generator::new();
+
+        assert_eq!(generator.indent(line), String::from("    ") + line);
+    }
+
+    #[test]
+    fn test_indent_level_4() {
+        let line: &str = "fn test_indent_level_4() {}";
+        let mut generator = Generator::new();
+        generator.indentation_level = 4;
+
+        assert_eq!(generator.indent(line), String::from("                ") + line);
+    }
+}

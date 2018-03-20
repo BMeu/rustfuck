@@ -31,3 +31,25 @@ impl Compiler {
         generator.generate(PREFACE, &tokens)
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    use Compiler;
+
+    #[test]
+    fn test_new() {
+        let compiler = Compiler::new();
+        assert_eq!(compiler, Compiler{});
+    }
+
+    #[test]
+    fn test_compile() {
+        let compiler = Compiler::new();
+        let source: &str = include_str!("../resources/tests/hello.bf");
+        let expected = String::from(include_str!("../resources/tests/hello.c"));
+
+        let compiled: String = compiler.compile(source);
+        assert_eq!(compiled, expected);
+    }
+}
