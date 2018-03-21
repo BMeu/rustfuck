@@ -7,31 +7,42 @@
 //! Implementations and trait definitions for lexers, analyzing a program source to specific tokens.
 
 /// The tokens representing the commands understood by rustfuck.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Token {
     /// Increment the current cell.
-    Add,
+    Add(String, MetaData),
 
     /// Decrement the current cell.
-    Sub,
+    Sub(String, MetaData),
 
     /// Move the pointer to the next right neighbor of the current cell.
-    Right,
+    Right(String, MetaData),
 
     /// Move the pointer to the next left neighbor of the current cell.
-    Left,
+    Left(String, MetaData),
 
     /// Read a single character into the current cell.
-    Read,
+    Read(String, MetaData),
 
     /// Print the content of the current cell.
-    Write,
+    Write(String, MetaData),
 
     /// Begin a loop at the current cell.
-    BeginLoop,
+    BeginLoop(String, MetaData),
 
     /// End the current loop.
-    EndLoop,
+    EndLoop(String, MetaData),
+}
+
+/// Additional information on each token.
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub struct MetaData {
+
+    /// The line number in which the token occurs.
+    pub lineno: usize,
+
+    /// The position within the line at which the token starts.
+    pub position: usize,
 }
 
 /// Convert a language's lexemes into tokens.

@@ -7,6 +7,7 @@
 //! Implementation of the ``Brainfuck`` programming language.
 
 use Lexer;
+use MetaData;
 use Token;
 
 /// The esoteric programming language ``Brainfuck``, created in 1993 by Urban Müller.
@@ -30,17 +31,21 @@ impl Lexer for Brainfuck {
     fn tokenize(&self) -> Vec<Token> {
         let mut tokens = Vec::<Token>::new();
 
-        for char in self.source.chars() {
-            match char {
-                '+' => tokens.push(Token::Add),
-                '-' => tokens.push(Token::Sub),
-                '>' => tokens.push(Token::Right),
-                '<' => tokens.push(Token::Left),
-                ',' => tokens.push(Token::Read),
-                '.' => tokens.push(Token::Write),
-                '[' => tokens.push(Token::BeginLoop),
-                ']' => tokens.push(Token::EndLoop),
-                _ => {},
+        // Lines and cursor positions start counting at 1, so use ``zip((1..))`` instead of enumerate which would start
+        // counting at 0.
+        for (line, lineno) in self.source.lines().zip((1..)) {
+            for (char, position) in line.chars().zip((1..)) {
+                match char {
+                    '+' => tokens.push(Token::Add(String::from("+"), MetaData { lineno, position })),
+                    '-' => tokens.push(Token::Sub(String::from("-"), MetaData { lineno, position })),
+                    '>' => tokens.push(Token::Right(String::from(">"), MetaData { lineno, position })),
+                    '<' => tokens.push(Token::Left(String::from("<"), MetaData { lineno, position })),
+                    ',' => tokens.push(Token::Read(String::from(","), MetaData { lineno, position })),
+                    '.' => tokens.push(Token::Write(String::from("."), MetaData { lineno, position })),
+                    '[' => tokens.push(Token::BeginLoop(String::from("["), MetaData { lineno, position })),
+                    ']' => tokens.push(Token::EndLoop(String::from("]"), MetaData { lineno, position })),
+                    _ => {},
+                }
             }
         }
 
@@ -51,6 +56,7 @@ impl Lexer for Brainfuck {
 #[cfg(test)]
 mod tests {
     use Lexer;
+    use MetaData;
     use Token;
     use language::Brainfuck;
 
@@ -69,7 +75,7 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::Add,
+            Token::Add(String::from("+"), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
@@ -81,7 +87,7 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::Sub,
+            Token::Sub(String::from("-"), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
@@ -93,7 +99,7 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::Right,
+            Token::Right(String::from(">"), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
@@ -105,7 +111,7 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::Left,
+            Token::Left(String::from("<"), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
@@ -117,7 +123,7 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::Read,
+            Token::Read(String::from(","), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
@@ -129,7 +135,7 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::Write,
+            Token::Write(String::from("."), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
@@ -141,7 +147,7 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::BeginLoop,
+            Token::BeginLoop(String::from("["), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
@@ -153,26 +159,26 @@ mod tests {
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::EndLoop,
+            Token::EndLoop(String::from("]"), MetaData{ lineno: 1, position: 1 }),
         ];
         assert_eq!(tokens, expected);
     }
 
     #[test]
     fn test_tokenize() {
-        let source: &str = "+-><No Brainfuck symbols,.[]";
+        let source: &str = "+-><No Brainfuck\nsymbols,.[]";
         let bf = Brainfuck::new(source);
 
         let tokens: Vec<Token> = bf.tokenize();
         let expected: Vec<Token> = vec![
-            Token::Add,
-            Token::Sub,
-            Token::Right,
-            Token::Left,
-            Token::Read,
-            Token::Write,
-            Token::BeginLoop,
-            Token::EndLoop,
+            Token::Add(String::from("+"), MetaData{ lineno: 1, position: 1 }),
+            Token::Sub(String::from("-"), MetaData{ lineno: 1, position: 2 }),
+            Token::Right(String::from(">"), MetaData{ lineno: 1, position: 3 }),
+            Token::Left(String::from("<"), MetaData{ lineno: 1, position: 4 }),
+            Token::Read(String::from(","), MetaData{ lineno: 2, position: 8 }),
+            Token::Write(String::from("."), MetaData{ lineno: 2, position: 9 }),
+            Token::BeginLoop(String::from("["), MetaData{ lineno: 2, position: 10 }),
+            Token::EndLoop(String::from("]"), MetaData{ lineno: 2, position: 11 }),
         ];
         assert_eq!(tokens, expected);
     }

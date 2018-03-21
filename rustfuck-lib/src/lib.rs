@@ -25,4 +25,5 @@ mod lexer;
 pub use compiler::Compiler;
 pub use generator::Generator;
 pub use lexer::Lexer;
+pub use lexer::MetaData;
 pub use lexer::Token;

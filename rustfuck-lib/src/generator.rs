@@ -28,38 +28,38 @@ impl Generator {
     pub fn generate(&mut self, template: &str, tokens: &[Token]) -> String {
         let mut output = String::from(template);
 
-        for &token in tokens {
+        for token in tokens {
             match token {
-                Token::Add => {
+                &Token::Add(_, _) => {
                     // Increment the value at the current cell.
                     output.push_str(&self.indent("(*ptr)++;\n"));
                 },
-                Token::Sub => {
+                &Token::Sub(_, _) => {
                     // Decrement the value at the current cell.
                     output.push_str(&self.indent("(*ptr)--;\n"));
                 },
-                Token::Right => {
+                &Token::Right(_, _) => {
                     // Go to the right neighbor of the current cell.
                     output.push_str(&self.indent("ptr++;\n"));
                 },
-                Token::Left => {
+                &Token::Left(_, _) => {
                     // Go to the left neighbor of the current cell.
                     output.push_str(&self.indent("ptr--;\n"));
                 },
-                Token::Read => {
+                &Token::Read(_, _) => {
                     // Read a single character into the current cell.
                     output.push_str(&self.indent("*ptr = getchar();\n"));
                 },
-                Token::Write => {
+                &Token::Write(_, _) => {
                     // Print the character of the current cell.
                     output.push_str(&self.indent("putchar(*ptr);\n"));
                 },
-                Token::BeginLoop => {
+                &Token::BeginLoop(_, _) => {
                     // Begin a loop at the current cell.
                     output.push_str(&self.indent("while (*ptr) {\n"));
                     self.indentation_level += 1;
                 },
-                Token::EndLoop => {
+                &Token::EndLoop(_, _) => {
                     // Close the current loop.
                     self.indentation_level -= 1;
                     output.push_str(&self.indent("}\n"));
@@ -89,6 +89,7 @@ impl Generator {
 mod tests {
 
     use Generator;
+    use MetaData;
     use Token;
 
     #[test]
@@ -101,14 +102,14 @@ mod tests {
     fn test_generate_hello_world() {
         let template: &str = "{\n";
         let tokens: Vec<Token> = vec![
-            Token::Add,
-            Token::Right,
-            Token::Left,
-            Token::BeginLoop,
-            Token::Read,
-            Token::Sub,
-            Token::EndLoop,
-            Token::Write,
+            Token::Add(String::from("+"), MetaData{ lineno: 1, position: 1 }),
+            Token::Right(String::from(">"), MetaData{ lineno: 1, position: 2 }),
+            Token::Left(String::from("<"), MetaData{ lineno: 1, position: 3 }),
+            Token::BeginLoop(String::from("["), MetaData{ lineno: 1, position: 4 }),
+            Token::Read(String::from(","), MetaData{ lineno: 1, position: 5 }),
+            Token::Sub(String::from("-"), MetaData{ lineno: 1, position: 6 }),
+            Token::EndLoop(String::from("]"), MetaData{ lineno: 1, position: 7 }),
+            Token::Write(String::from("."), MetaData{ lineno: 1, position: 8 }),
         ];
         let expected = String::from(include_str!("../resources/tests/generator_test_generate.c"));
 
