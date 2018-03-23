@@ -40,7 +40,7 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
 /// let arg_matches = app.get_matches();
 /// let configuration = get_arguments(arg_matches);
 /// ```
-pub fn get_arguments<'a>(arg_matches: ArgMatches<'a>) -> (PathBuf, PathBuf) {
+pub fn get_arguments(arg_matches: &ArgMatches) -> (PathBuf, PathBuf) {
     // Get the input source.
     let input: PathBuf = match arg_matches.value_of("INPUT") {
         Some(input) => PathBuf::from(input),

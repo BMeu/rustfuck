@@ -31,10 +31,10 @@ impl Lexer for Brainfuck {
     fn tokenize(&self) -> Vec<Token> {
         let mut tokens = Vec::<Token>::new();
 
-        // Lines and cursor positions start counting at 1, so use ``zip((1..))`` instead of enumerate which would start
+        // Lines and cursor positions start counting at 1, so use ``zip(1..)`` instead of enumerate which would start
         // counting at 0.
-        for (line, lineno) in self.source.lines().zip((1..)) {
-            for (char, position) in line.chars().zip((1..)) {
+        for (line, lineno) in self.source.lines().zip(1..) {
+            for (char, position) in line.chars().zip(1..) {
                 match char {
                     '+' => tokens.push(Token::Add(String::from("+"), MetaData { lineno, position })),
                     '-' => tokens.push(Token::Sub(String::from("-"), MetaData { lineno, position })),

@@ -41,7 +41,7 @@ fn main() {
     // Get the configuration.
     let app: App = cli::setup();
     let arg_matches: ArgMatches = app.get_matches();
-    let (input_path, output_path): (PathBuf, PathBuf) = cli::get_arguments(arg_matches);
+    let (input_path, output_path): (PathBuf, PathBuf) = cli::get_arguments(&arg_matches);
 
     // Load the source.
     println!("Reading input from {path}.", path=input_path.display());

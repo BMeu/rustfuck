@@ -47,7 +47,7 @@ mod tests {
     #[test]
     fn test_compile() {
         let compiler = Compiler::new();
-        let source: &str = include_str!("../resources/tests/hello.bf");
+        let source: &str = include_str!("../../examples/hello.bf");
         let expected = String::from(include_str!("../resources/tests/hello.c"));
 
         let compiled: String = compiler.compile(source);
