@@ -23,4 +23,5 @@ codecov = { repository = "BMEU/rustfuck" }
 travis-ci = { repository = "BMeu/rustfuck" }
 
 [dependencies]
+clap = "2.31"
 rustfuck_lib = { path = "rustfuck-lib" }

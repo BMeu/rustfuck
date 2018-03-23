@@ -17,16 +17,78 @@
                                       stutter, used_underscore_binding, use_debug, wrong_self_convention,
                                       wrong_pub_self_convention))]
 
+#[macro_use]
+extern crate clap;
 extern crate rustfuck_lib;
 
-use rustfuck_lib::Compiler;
+pub mod cli;
 
-/// The classic "Hello, world!" program, written in Brainfuck.
-static PROGRAM: &'static str = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.";
+use std::error::Error;
+use std::fs::File;
+use std::io::BufReader;
+use std::io::BufWriter;
+use std::io::Error as IOError;
+use std::io::Read;
+use std::io::Write;
+use std::path::PathBuf;
+
+use clap::App;
+use clap::ArgMatches;
+use rustfuck_lib::Compiler;
 
 /// Compile the ``Hello world!`` source code and print the generated ``C`` code to ``STDOUT``.
 fn main() {
+    // Get the configuration.
+    let app: App = cli::setup();
+    let arg_matches: ArgMatches = app.get_matches();
+    let (input_path, output_path): (PathBuf, PathBuf) = cli::get_arguments(arg_matches);
+
+    // Load the source.
+    println!("Reading input from {path}.", path=input_path.display());
+    let input_file: File = match File::open(input_path) {
+        Ok(file) => file,
+        Err(error) => {
+            // TODO: Graceful error handling.
+            panic!("Could not open input source: {msg}", msg=error.description());
+        }
+    };
+    let mut input_reader: BufReader<File> = BufReader::new(input_file);
+    let mut program = String::new();
+    match input_reader.read_to_string(&mut program) {
+        Ok(_) => {},
+        Err(error) => {
+            // TODO: Graceful error handling.
+            panic!("Could not read input source: {msg}", msg=error.description());
+        }
+    }
+
+    // Compile the program.
+    println!("Compiling.");
     let compiler = Compiler::new();
-    let program: String = compiler.compile(PROGRAM);
-    println!("{}", program);
+    let program: String = compiler.compile(&program);
+
+    // Write the output.
+    println!("Writing output to {path}.", path=output_path.display());
+    let output_file: File = match File::create(output_path) {
+        Ok(file) => file,
+        Err(error) => {
+            // TODO: Graceful error handling.
+            panic!("Could not create output: {msg}", msg=error.description());
+        }
+    };
+    let mut output_writer: BufWriter<File> = BufWriter::new(output_file);
+    let write_result: Result<(), IOError> = write!(output_writer, "{}", program);
+    let flush_result: Result<(), IOError> = output_writer.flush();
+
+    if let Err(error) = write_result {
+        // TODO: Graceful error handling.
+        panic!("Could not write to output file: {msg}", msg=error.description());
+    }
+
+    if let Err(error) = flush_result {
+        // TODO: Graceful error handling.
+        panic!("Could not write to output file: {msg}", msg=error.description());
+    }
+
+    println!("[SUCCESS]");
 }
