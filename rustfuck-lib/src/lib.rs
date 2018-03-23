@@ -18,11 +18,14 @@
                                       wrong_pub_self_convention))]
 
 mod compiler;
+mod error;
 mod generator;
 pub mod language;
 mod lexer;
 
 pub use compiler::Compiler;
+pub use error::Error;
+pub use error::Result;
 pub use generator::Generator;
 pub use lexer::Lexer;
 pub use lexer::MetaData;
