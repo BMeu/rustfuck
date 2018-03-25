@@ -51,7 +51,7 @@ script:
   - cargo doc --all
   - cargo test --all
   - cargo test --all --release
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/run-examples-gcc.sh fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/run-examples-gcc.sh; fi
 
 after_success: |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
