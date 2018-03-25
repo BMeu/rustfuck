@@ -12,8 +12,9 @@ in ``Rust``.
 Translate from ``Brainfuck`` to ``C``, and compile (on Linux, using ``GCC``):
 
 ```
-$ cargo run --release > program.c
-$ gcc -O3 program.c
+$ cargo run --release -- --output hello.c examples/hello.bf
+$ gcc -O3 -o hello hello.c
+$ ./hello
 ```
 
 ## Acknowledgements & Sources
