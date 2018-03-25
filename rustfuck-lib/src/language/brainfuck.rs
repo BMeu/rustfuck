@@ -4,13 +4,13 @@
 // MIT license <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your option. This file may not be copied,
 // modified, or distributed except according to those terms.
 
-//! Implementation of the ``Brainfuck`` programming language.
+//! Implementation of the `Brainfuck` programming language.
 
 use Lexer;
 use MetaData;
 use Token;
 
-/// The esoteric programming language ``Brainfuck``, created in 1993 by Urban Müller.
+/// The esoteric programming language `Brainfuck`, created in 1993 by Urban Müller.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Brainfuck {
 
@@ -19,7 +19,7 @@ pub struct Brainfuck {
 }
 
 impl Brainfuck {
-    /// Initialize a new ``Brainfuck`` program from the given ``source``.
+    /// Initialize a new `Brainfuck` program from the given `source`.
     pub fn new(source: &str) -> Brainfuck {
         Brainfuck {
             source: String::from(source),
@@ -31,7 +31,7 @@ impl Lexer for Brainfuck {
     fn tokenize(&self) -> Vec<Token> {
         let mut tokens = Vec::<Token>::new();
 
-        // Lines and cursor positions start counting at 1, so use ``zip(1..)`` instead of enumerate which would start
+        // Lines and cursor positions start counting at 1, so use `zip(1..)` instead of enumerate which would start
         // counting at 0.
         for (line, lineno) in self.source.lines().zip(1..) {
             for (char, position) in line.chars().zip(1..) {

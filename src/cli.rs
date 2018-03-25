@@ -4,7 +4,7 @@
 // MIT license <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your option. This file may not be copied,
 // modified, or distributed except according to those terms.
 
-//! Functions for setting up and working with the command-line interface of ``rustfuck``.
+//! Functions for setting up and working with the command-line interface of `rustfuck`.
 
 use std::path::PathBuf;
 
@@ -12,7 +12,7 @@ use clap::App;
 use clap::Arg;
 use clap::ArgMatches;
 
-/// Define the command-line arguments on the ``clap`` application.
+/// Define the command-line arguments on the `clap` application.
 pub fn setup<'a, 'b>() -> App<'a, 'b> {
     app_from_crate!()
         .help_message("Show this help message and exit.")
@@ -27,11 +27,11 @@ pub fn setup<'a, 'b>() -> App<'a, 'b> {
             .help("The generated C file. [default: ./<INPUT>.c]"))
 }
 
-/// Get the ``(input_file, output_file)``.
+/// Get the `(input_file, output_file)`.
 ///
-/// # Example
+/// # Examples
 ///
-/// ```rust
+/// ```
 /// use clap::App;
 /// use cli::setup;
 /// use cli::get_arguments;

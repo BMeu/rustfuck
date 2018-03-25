@@ -48,6 +48,6 @@ pub struct MetaData {
 /// Convert a language's lexemes into tokens.
 pub trait Lexer {
 
-    /// Convert the ``input`` string into a list of tokens.
+    /// Convert the `input` string into a list of tokens.
     fn tokenize(&self) -> Vec<Token>;
 }

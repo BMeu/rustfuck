@@ -4,11 +4,11 @@
 // MIT license <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your option. This file may not be copied,
 // modified, or distributed except according to those terms.
 
-//! Implementations of a generator for creating ``C`` code from intermediate compile results.
+//! Implementations of a generator for creating `C` code from intermediate compile results.
 
 use lexer::Token;
 
-/// A generator for creating ``C`` code from intermediate compile results.
+/// A generator for creating `C` code from intermediate compile results.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Generator {
 
@@ -24,7 +24,7 @@ impl Generator {
         }
     }
 
-    /// Generate the ``C`` code from the given list of ``tokens``, using the specified ``template``.
+    /// Generate the `C` code from the given list of `tokens`, using the specified `template`.
     pub fn generate(&mut self, template: &str, tokens: &[Token]) -> String {
         let mut output = String::from(template);
 
@@ -73,7 +73,7 @@ impl Generator {
         output
     }
 
-    /// Indent the given ``line`` respective to the current indentation level.
+    /// Indent the given `line` respective to the current indentation level.
     fn indent(&self, line: &str) -> String {
         let mut indentation = String::new();
         for _ in 0..self.indentation_level {

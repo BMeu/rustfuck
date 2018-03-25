@@ -4,7 +4,7 @@
 // MIT license <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your option. This file may not be copied,
 // modified, or distributed except according to those terms.
 
-//! The binary to run the ``rustfuck`` library.
+//! The binary to run the `rustfuck` library.
 
 #![warn(missing_docs,
         missing_debug_implementations, missing_copy_implementations,
@@ -37,7 +37,7 @@ use clap::ArgMatches;
 use rustfuck_lib::Compiler;
 use rustfuck_lib::Error;
 
-/// Compile the ``Hello world!`` source code and print the generated ``C`` code to ``STDOUT``.
+/// Compile the `Hello world!` source code and print the generated `C` code to `STDOUT`.
 fn main() {
     // Get the configuration.
     let app: App = cli::setup();
