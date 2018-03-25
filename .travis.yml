@@ -1,6 +1,5 @@
 language: rust
 sudo: required
-cache: cargo
 
 os:
   - linux
@@ -52,14 +51,7 @@ script:
   - cargo doc --all
   - cargo test --all
   - cargo test --all --release
-  - bash -c 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      cargo run --release -- --output hello.c examples/hello.bf &&
-      echo $? &&
-      gcc -O3 -o hello hello.c &&
-      echo $? &&
-      ./hello &&
-      echo $?;
-    fi'
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./scripts/run-examples-gcc.sh fi
 
 after_success: |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
