@@ -53,8 +53,8 @@ script:
   - cargo test --all
   - cargo test --all --release
   - bash -c 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      cargo run --release -- --output hello.c examples/hello.bf;
-      gcc -O3 -o hello hello.c;
+      cargo run --release -- --output hello.c examples/hello.bf &&
+      gcc -O3 -o hello hello.c &&
       ./hello;
     fi'
 
