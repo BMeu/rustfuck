@@ -39,14 +39,10 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
 
 before_script:
-  - bash -c 'if [[ "$TRAVIS_RUST_VERSION" == "$NIGHTLY_VERSION" ]]; then
-      cargo install clippy --vers $CLIPPY_VERSION --force;
-    fi'
+  - if [[ "$TRAVIS_RUST_VERSION" == "$NIGHTLY_VERSION" ]]; then cargo install clippy --vers $CLIPPY_VERSION --force; fi
 
 script:
-  - bash -c 'if [[ "$TRAVIS_RUST_VERSION" == "$NIGHTLY_VERSION" ]]; then
-      cargo clippy --all -- -D warnings;
-    fi'
+  - if [[ "$TRAVIS_RUST_VERSION" == "$NIGHTLY_VERSION" ]]; then cargo clippy --all -- -D warnings; fi
   - cargo check --all
   - cargo doc --all
   - cargo test --all
