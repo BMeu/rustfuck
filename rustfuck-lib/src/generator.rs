@@ -29,37 +29,37 @@ impl Generator {
         let mut output = String::from(template);
 
         for token in tokens {
-            match token {
-                &Token::Add(_, _) => {
+            match *token {
+                Token::Add(_, _) => {
                     // Increment the value at the current cell.
                     output.push_str(&self.indent("(*ptr)++;\n"));
                 },
-                &Token::Sub(_, _) => {
+                Token::Sub(_, _) => {
                     // Decrement the value at the current cell.
                     output.push_str(&self.indent("(*ptr)--;\n"));
                 },
-                &Token::Right(_, _) => {
+                Token::Right(_, _) => {
                     // Go to the right neighbor of the current cell.
                     output.push_str(&self.indent("ptr++;\n"));
                 },
-                &Token::Left(_, _) => {
+                Token::Left(_, _) => {
                     // Go to the left neighbor of the current cell.
                     output.push_str(&self.indent("ptr--;\n"));
                 },
-                &Token::Read(_, _) => {
+                Token::Read(_, _) => {
                     // Read a single character into the current cell.
                     output.push_str(&self.indent("*ptr = getchar();\n"));
                 },
-                &Token::Write(_, _) => {
+                Token::Write(_, _) => {
                     // Print the character of the current cell.
                     output.push_str(&self.indent("putchar(*ptr);\n"));
                 },
-                &Token::BeginLoop(_, _) => {
+                Token::BeginLoop(_, _) => {
                     // Begin a loop at the current cell.
                     output.push_str(&self.indent("while (*ptr) {\n"));
                     self.indentation_level += 1;
                 },
-                &Token::EndLoop(_, _) => {
+                Token::EndLoop(_, _) => {
                     // Close the current loop.
                     self.indentation_level -= 1;
                     output.push_str(&self.indent("}\n"));
