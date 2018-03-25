@@ -52,11 +52,14 @@ script:
   - cargo doc --all
   - cargo test --all
   - cargo test --all --release
-  - | if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+  - bash -c 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       cargo run --release -- --output hello.c examples/hello.bf &&
+      echo $? &&
       gcc -O3 -o hello hello.c &&
+      echo $? &&
       ./hello;
-    fi
+      echo $? &&
+    fi'
 
 after_success: |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
